@@ -10,9 +10,12 @@ namespace CarManufacturer
             {
                 Make = "VW",
                 Model = "MK3",
-                Year = 1992
+                Year = 1992,
+                FuelQuantity = 200,
+                FuelConsumption = 200
             };
-            Console.WriteLine(car);
+            car.Drive(2000);
+            Console.WriteLine(car.WhoAmI());
         }
     }
 }
