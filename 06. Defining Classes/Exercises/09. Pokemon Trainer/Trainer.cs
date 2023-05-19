@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DefiningClasses
 {
@@ -29,25 +30,16 @@ namespace DefiningClasses
             return false;
         }
 
-        public Trainer(string name, int badgesCount, List<Pokemon> pokemonCollection) : this(name)
-        {
-            BadgesCount = badgesCount;
-            PokemonCollection = pokemonCollection;
-        }
-
         public void Caught(Pokemon pokemonCaught)
         {
             PokemonCollection.Add(pokemonCaught);
         }
 
-        public void Damage(List<Pokemon> pokemonCollection)
+        public void Damage()
         {
-            foreach (var pokemon in PokemonCollection)
-            {
-                Pokemon currentPokemon = pokemon;
-                pokemon.Health -= 10;
-            }
-
+            PokemonCollection = PokemonCollection.Select(x =>
+            { x.Health -= 10; return x; }).ToList();
+            
             PokemonCollection.RemoveAll(x => x.Health <= 0);
         }
 

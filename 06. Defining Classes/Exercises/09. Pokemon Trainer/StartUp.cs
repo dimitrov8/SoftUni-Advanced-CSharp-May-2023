@@ -37,7 +37,7 @@ namespace DefiningClasses
                     }
                     else
                     {
-                        trainer.Damage(trainer.PokemonCollection);
+                        trainer.Damage();
                     }
                 }                
             }
