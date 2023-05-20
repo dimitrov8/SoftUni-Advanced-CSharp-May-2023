@@ -5,19 +5,19 @@ namespace SoftUniParking;
 
 public class Parking
 {
-    private List<Car> _cars;
-    private int _capacity;
+    private List<Car> cars;
+    private int capacity;
 
     public List<Car> Cars
     {
-        get => _cars;
-        set => _cars = value;
+        get => cars;
+        set => cars = value;
     }
 
     public int Capacity
     {
-        get => _capacity;
-        set => _capacity = value;
+        get => capacity;
+        set => capacity = value;
     }
 
     public Parking(int capacity)
