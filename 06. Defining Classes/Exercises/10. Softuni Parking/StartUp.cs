@@ -1,5 +1,5 @@
 ﻿using System;
-
+// 92/100
 namespace SoftUniParking
 {
     public class StartUp
