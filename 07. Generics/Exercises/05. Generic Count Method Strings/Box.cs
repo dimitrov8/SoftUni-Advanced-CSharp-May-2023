@@ -15,7 +15,7 @@ namespace GenericCountMethodStrings
 
         public void Add(T item)
         {
-            _items.Add(item);
+           this._items.Add(item);
         }
 
         public int Count(T inputItem)
