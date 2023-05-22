@@ -2,16 +2,16 @@
 {
     public class Box<T>
     {
-        private readonly string _text;
+        private readonly string _value;
 
         public Box(string text)
         {
-            this._text = text;
+            _value = text;
         }
 
         public override string ToString()
         {
-            return $"{this._text.GetType()}: {this._text}";
+            return $"{typeof(T)}: {this._value}";
         }
     }
 }

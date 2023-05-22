@@ -9,8 +9,7 @@ namespace GenericBoxOfString
             int nOfStrings = int.Parse(Console.ReadLine());
             for (int i = 0; i < nOfStrings; i++)
             {
-                Box<string> box = new Box<string>(Console.ReadLine());
-                Console.WriteLine(box);
+                Console.WriteLine(new Box<string>(Console.ReadLine()));
             }
         }
     }
