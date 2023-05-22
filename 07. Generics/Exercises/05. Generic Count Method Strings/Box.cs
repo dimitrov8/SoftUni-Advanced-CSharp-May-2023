@@ -6,7 +6,7 @@ namespace GenericCountMethodStrings
     public class Box<T> where T : IComparable<T>
     {
         private readonly List<T> _items;
-        public int ItemsCount => _items.Count;
+        public int ItemsCount => this._items.Count;
 
         public Box()
         {
@@ -15,7 +15,7 @@ namespace GenericCountMethodStrings
 
         public void Add(T item)
         {
-            _items.Add(item);
+           this._items.Add(item);
         }
 
         public int Count(T inputItem)
