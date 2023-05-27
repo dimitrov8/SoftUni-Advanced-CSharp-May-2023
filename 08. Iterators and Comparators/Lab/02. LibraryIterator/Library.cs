@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace IteratorsAndComparators
 {
     public class Library : IEnumerable<Book>
-
     {
         private List<Book> books;
 
@@ -30,7 +29,7 @@ namespace IteratorsAndComparators
 
             public Book Current => this.books[this.currentIndex];
 
-            object IEnumerator.Current => Current;
+            object IEnumerator.Current => this.Current;
 
             public void Dispose()
             {
@@ -39,9 +38,9 @@ namespace IteratorsAndComparators
 
         public IEnumerator<Book> GetEnumerator()
         {
-            return new LibraryIterator(books);
+            return new LibraryIterator(this.books);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }
