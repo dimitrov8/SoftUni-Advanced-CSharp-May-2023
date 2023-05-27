@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace IteratorsAndComparators
 {
     public class Library : IEnumerable<Book>
-
     {
         private List<Book> books;
 
@@ -16,12 +15,12 @@ namespace IteratorsAndComparators
 
         public IEnumerator<Book> GetEnumerator()
         {
-            foreach (var book in books)
+            foreach (var book in this.books)
             {
                 yield return book;
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }
