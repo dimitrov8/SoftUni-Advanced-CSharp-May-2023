@@ -25,7 +25,7 @@ namespace EqualityLogic
                 return false;
             }
 
-            return this.name.Equals(other.name, StringComparison.OrdinalIgnoreCase) && this.age.Equals(other.age);
+            return this.name.Equals(other.name) && this.age.Equals(other.age);
         }
 
         public override bool Equals(object obj)
@@ -35,7 +35,7 @@ namespace EqualityLogic
 
         public int CompareTo(Person other)
         {
-            int result = string.Compare(this.name, other.name, StringComparison.OrdinalIgnoreCase);
+            int result = this.name.CompareTo(other.name);
             if (result == 0)
             {
                 result = this.age.CompareTo(other.age);
