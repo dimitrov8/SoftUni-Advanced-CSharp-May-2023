@@ -1,10 +1,7 @@
 using static QuickSort;
 
 // Read input
-int[] array = Console.ReadLine()!
-    .Split()
-    .Select(int.Parse)
-    .ToArray();
+int[] array = Console.ReadLine()!.Split().Select(int.Parse).ToArray();
 
 // Shuffle the array
 Shuffle(array);
@@ -22,9 +19,7 @@ public class QuickSort
         Random random = new Random();
         for (int currentIndex = 0; currentIndex < array.Length; currentIndex++)
         {
-            int randomIndex =
-                random.Next(currentIndex,
-                    array.Length - 1); // Generate a random index between currentIndex and the last index
+            int randomIndex = random.Next(currentIndex, array.Length - 1); // Generate a random index between currentIndex and the last index
             Swap(array, currentIndex, randomIndex); // Swap the elements at currentIndex and randomIndex
         }
     }
@@ -32,10 +27,7 @@ public class QuickSort
     public static void Sort<T>(T[] array, int low, int high) where T : IComparable<T>
     {
         // Base case: 
-        if (low >= high)
-        {
-            return; // If the array has 0 or 1 element, it is already sorted
-        }
+        if (low >= high) return; // If the array has 0 or 1 element, it is already sorted
 
         // Perform partitioning and get the updated index of the pivot
         int index = Partition(array, low, high);
@@ -47,10 +39,7 @@ public class QuickSort
 
     private static int Partition<T>(T[] array, int low, int high) where T : IComparable<T>
     {
-        if (low >= high) // If there is only one element, it is already partitioned and the index of the pivot is the index of its only element
-        {
-            return low; // Return the index of the pivot
-        }
+        if (low >= high) return low;  // If there is only one element, it is already partitioned and the index of the pivot is the index of its only element: => Return the index of the pivot
 
         T pivot = array[low]; // Choose the first element as the pivot
         int leftIndex = low + 1;
@@ -81,7 +70,6 @@ public class QuickSort
 
     private static void Swap<T>(T[] array, int index1, int index2)
     {
-        (array[index1], array[index2]) =
-            (array[index2], array[index1]); // Swap the elements at index1 and index2 using tuple deconstruction
+        (array[index1], array[index2]) = (array[index2], array[index1]); // Swap the elements at index1 and index2 using tuple deconstruction
     }
 }
