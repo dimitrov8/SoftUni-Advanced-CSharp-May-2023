@@ -8,7 +8,44 @@ namespace Bee
         static void Main(string[] args)
         {
             int length = int.Parse(Console.ReadLine()!); // Read the length of the matrix (2D array)
+            char[,] matrix using System;
+
+namespace Bee
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int length = int.Parse(Console.ReadLine()!); // Read the length of the matrix (2D array)
             char[,] matrix = new char[length, length]; // Create the matrix
+            AssignMatrixValues(matrix); // Assign the values to the matrix
+
+            string command; // Initialize the command
+            int pollinatedCount = 0; // Keep track of the number of pollinated flowers
+            bool isLost = false; // Boolean used to keep track if the Bee is lost (got outside of the matrix bounds)
+            Position beePosition = FindBeePosition(matrix, ref isLost); // Get the position of the Bee
+            while ((command = Console.ReadLine()) != "End") // While the command is not "End"
+            {
+                ExecuteCommand(command, matrix, ref beePosition, ref pollinatedCount, ref isLost); // Go in the method: =>
+
+                if (isLost) // If the Bee is lost: =>
+                {
+                    Console.WriteLine("The bee got lost!"); // Print
+                    break; // Break
+                }
+            }
+
+            // Print if the Bee managed to pollinate at least 5 flowers
+            Console.WriteLine(pollinatedCount >= 5
+                    ? $"Great job, the bee managed to pollinate {pollinatedCount} flowers!"
+                    : $"The bee couldn't pollinate the flowers, she needed {5 - pollinatedCount} flowers more");
+
+            // Print The 2D Array
+            PrintMatrix(matrix);
+        }
+        
+        private static void AssignMatrixValues(char[,] matrix)
+        {
             for (int row = 0; row < matrix.GetLength(0); row++) // For each row in the matrix
             {
                 string input = Console.ReadLine()!; // Read user input to store characters in the matrix
@@ -17,212 +54,94 @@ namespace Bee
                     matrix[row, col] = input[col]; // Store the current character in matrix
                 }
             }
+        }
 
-            string command; // Initialize the command
-            int pollinatedCount = 0; // Keep track of the number of pollinated flowers
-            bool isLost = false; // Boolean used to keep track if the Bee is lost (got outside of the matrix bounds)
-            while ((command = Console.ReadLine()) != "End") // While the command is not "End"
-            {
-                ExecuteCommand(command, matrix, ref pollinatedCount,ref isLost); // Go in the method: =>
-                if (isLost) // If at any point the Bee got lost
-                {
-                    break; // Break out of the loop
-                }
-            }
-            if (isLost) // If the Bee is lost
-            {
-                Console.WriteLine("The bee got lost!"); // Print
-            }
-            
-            // Print if the Bee managed to pollinate at least 5 flowers
-            Console.WriteLine(pollinatedCount >= 5
-                ? $"Great job, the bee managed to pollinate {pollinatedCount} flowers!"
-                : $"The bee couldn't pollinate the flowers, she needed {5 - pollinatedCount} flowers more");
-
-            // Print The 2D Array
+        private static Position FindBeePosition(char[,] matrix, ref bool isLost)
+        {
             for (int row = 0; row < matrix.GetLength(0); row++)
             {
                 for (int col = 0; col < matrix.GetLength(1); col++)
                 {
-                    Console.Write(matrix[row,col]);
+                    if (matrix[row, col] == 'B') // If a Bee is found
+                    {
+                        return new Position(row, col); // Return the position of the Bee
+                    }
+                }
+            }
+            // Else a Bee is not found
+            isLost = true; // Set the isLost flag to true
+            return null; // Return null
+        }
+        
+        private static void ExecuteCommand(string command, char[,] matrix, ref Position beePosition, ref int pollinatedCount, ref bool isLost)
+        {
+            int currentRow = beePosition.Row; // Variable to hold the current row and later check if the move is within the bound of the matrix
+            int currentCol = beePosition.Col; // Variable to hold the current column and later check if a move is withing the bound of the matrix 
+
+            switch (command) // User input command
+            {
+                // Every move moves the newly created variable and later we check if the move is within the bound of the matrix
+                case "up":
+                    currentRow--;
+                    break;
+                case "down":
+                    currentRow++;
+                    break;
+                case "left":
+                    currentCol--;
+                    break;
+                case "right":
+                    currentCol++;
+                    break;
+            }
+
+            // If the bound is not withing the matrix
+            if (currentRow < 0 || currentRow >= matrix.GetLength(0) || currentCol < 0 || currentCol >= matrix.GetLength(1))
+            {
+                matrix[beePosition.Row, beePosition.Col] = '.'; // Remove the Bee from the matrix
+                isLost = true; // Set the isLost flag to true
+            }
+            else // Else if the move is within the bounds of the matrix
+            {
+                char element = matrix[currentRow, currentCol]; // Get the element of the new position we want to move the Bee too
+
+                matrix[currentRow, currentCol] = 'B'; // Move the Bee to the new position
+                matrix[beePosition.Row, beePosition.Col] = '.'; // Remove the Bee from the old position
+
+                // Updates the Bee position
+                beePosition.Row = currentRow;
+                beePosition.Col = currentCol;
+
+                if (element == 'f') // If the element is 'f' then: =>
+                {
+                    pollinatedCount++; // Increment the number of pollinated flowers
+                }
+                else if (element == 'O') // If the element is 'O' then: =>
+                {
+                    ExecuteCommand(command, matrix, ref beePosition, ref pollinatedCount, ref isLost); // Go to the method again: =>
+                }
+            }
+        }
+
+        private static void PrintMatrix(char[,] matrix)
+        {
+            for (int row = 0; row < matrix.GetLength(0); row++) // For each row in the matrix
+            {
+                for (int col = 0; col < matrix.GetLength(1); col++) // For each column in the matrix
+                {
+                    Console.Write(matrix[row, col]); // Print the current element
                 }
 
                 Console.WriteLine();
             }
         }
 
-        private static void ExecuteCommand(string command, char[,] matrix, ref int pollinatedCount, ref bool isLost)
-        {
-            var beePosition = matrix
-                .Cast<char>()
-                .Select((element, index) => new { RowIndex = index / matrix.GetLength(1), ColIndex = index % matrix.GetLength(1), Element = element})
-                .FirstOrDefault(item => item.Element == 'B');
-            if (beePosition == null) return; 
-
-            Bee bee = new Bee(beePosition.RowIndex, beePosition.ColIndex); // Keep track of the Bee position
-            switch (command) // Moves
-            {
-                case "up":
-                    if (bee.Row - 1 >= 0 && bee.Row - 1 < matrix.GetLength(0)) // If the new position is within the matrix
-                    {
-                        matrix[bee.Row, bee.Col] = '.'; // Remove the Bee from the current position
-                        char elementAtTheNewPosition = matrix[bee.Row - 1, bee.Col]; // Get the element at the new position
-                        switch (elementAtTheNewPosition) // Check the element at the new position
-                        {
-                            case 'f': // It's a flower to be pollinated
-                                pollinatedCount++; // Increment the count of the pollinated flowers
-                                matrix[bee.Row - 1, bee.Col] = 'B'; // Move the Bee to the new position
-                                bee.Row--; // Update the row position of the bee in the property
-                                break;
-                            case 'O': // It's a bonus move
-                                if (bee.Row - 2 >= 0 && bee.Row - 2 < matrix.Length) // If the new position is within the matrix
-                                {
-                                    matrix[bee.Row - 1, bee.Col] = '.'; // Remove the 'O'
-                                    elementAtTheNewPosition = matrix[bee.Row - 2, bee.Col];
-                                    if (elementAtTheNewPosition == 'f') // On our bonus move if the element is flower
-                                    {
-                                        pollinatedCount++; // Increment the count of pollinated flowers
-                                    }
-                                    matrix[bee.Row - 2, bee.Col] = 'B'; // Move the Bee to the new position
-                                    bee.Row -= 2;  // Update the row position of the Bee in the property
-                                }
-                                break;
-                            default: // Its an empty position
-                                matrix[bee.Row - 1, bee.Col] = 'B'; // Move the Bee to the new position
-                                bee.Row--; // Update the row position of the Bee in the property
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        matrix[bee.Row, bee.Col] = '.';
-                        bee.Row = bee.Col = -1;
-                        isLost = true;
-                    }
-                    break;
-                case "down":
-                    if (bee.Row + 1 >= 0 && bee.Row + 1 < matrix.GetLength(0)) // If the new position is within the matrix
-                    {
-                        matrix[bee.Row, bee.Col] = '.'; // Remove the Bee from the current position
-                        char elementAtTheNewPosition = matrix[bee.Row + 1, bee.Col]; // Get the element at the new position
-                        switch (elementAtTheNewPosition) // Check the element at the new position
-                        {
-                            case 'f': // It's a flower to be pollinated
-                                pollinatedCount++; // Increment the count of the pollinated flowers
-                                matrix[bee.Row + 1, bee.Col] = 'B'; // Move the Bee to the new position
-                                bee.Row++; // Update the row position of the bee in the property
-                                break;
-                            case 'O': // It's a bonus move
-                                if (bee.Row + 2 >= 0 && bee.Row + 2 < matrix.GetLength(0)) // If the new position is within the matrix
-                                {
-                                    matrix[bee.Row + 1, bee.Col] = '.'; // Remove the 'O'
-                                    elementAtTheNewPosition = matrix[bee.Row + 2, bee.Col];
-                                    if (elementAtTheNewPosition == 'f') // On our bonus move if the element is flower
-                                    {
-                                        pollinatedCount++; // Increment the count of pollinated flowers
-                                    }
-                                    matrix[bee.Row + 2, bee.Col] = 'B'; // Move the Bee to the new position
-                                    bee.Row += 2; // Update the row position of the Bee in the property
-                                }
-                                break;
-                            default: // Its an empty position
-                                matrix[bee.Row + 1, bee.Col] = 'B'; // Move the Bee to the new position
-                                bee.Row++; // Update the row position of the Bee in the property
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        matrix[bee.Row, bee.Col] = '.';
-                        bee.Row = bee.Col = -1;
-                        isLost = true;
-                    }
-                    break;
-                case "left":
-                    if (bee.Col - 1 >= 0 && bee.Col - 1 < matrix.GetLength(1)) // If the new position is within the matrix
-                    {
-                        matrix[bee.Row, bee.Col] = '.'; // Remove the Bee from the current position
-                        char elementAtTheNewPosition = matrix[bee.Row, bee.Col - 1]; // Get the element at the new position
-                        switch (elementAtTheNewPosition) // Check the element at the new position
-                        {
-                            case 'f': // It's a flower to be pollinated
-                                pollinatedCount++; // Increment the count of the pollinated flowers
-                                matrix[bee.Row, bee.Col - 1] = 'B'; // Move the Bee to the new position
-                                bee.Col--; // Update the row position of the bee in the property
-                                break;
-                            case 'O': // It's a bonus move
-                                if (bee.Col - 2 >= 0 && bee.Col - 2 < matrix.GetLength(1)) // If the new position is within the matrix
-                                {
-                                    matrix[bee.Row, bee.Col - 1] = '.'; // Remove the 'O'
-                                    elementAtTheNewPosition = matrix[bee.Row, bee.Col - 2];
-                                    if (elementAtTheNewPosition == 'f') // On our bonus move if the element is flower
-                                    {
-                                        pollinatedCount++; // Increment the count of pollinated flowers
-                                    }
-                                    matrix[bee.Row, bee.Col - 2] = 'B'; // Move the Bee to the new position
-                                    bee.Col -= 2; // Update the col position of the Bee in the property
-                                }
-                                break;
-                            default: // Its an empty position
-                                matrix[bee.Row, bee.Col - 1] = 'B'; // Move the Bee to the new position
-                                bee.Col--; // Update the col position of the Bee in the property
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        matrix[bee.Row, bee.Col] = '.';
-                        bee.Row = bee.Col = -1;
-                        isLost = true;
-                    }
-                    break;
-                case "right":
-                    if (bee.Col + 1 >= 0 && bee.Col + 1 < matrix.GetLength(1)) // If the new position is within the matrix
-                    {
-                        matrix[bee.Row, bee.Col] = '.'; // Remove the Bee from the current position
-                        char elementAtTheNewPosition = matrix[bee.Row, bee.Col + 1]; // Get the element at the new position
-                        switch (elementAtTheNewPosition) // Check the element at the new position
-                        {
-                            case 'f': // It's a flower to be pollinated
-                                pollinatedCount++; // Increment the count of the pollinated flowers
-                                matrix[bee.Row, bee.Col + 1] = 'B'; // Move the Bee to the new position
-                                bee.Col++; // Update the col position of the bee in the property
-                                break;
-                            case 'O': // It's a bonus move
-                                if (bee.Col + 2 < matrix.GetLength(1)) // If the new position is within the matrix
-                                {
-                                    matrix[bee.Row, bee.Col + 1] = '.'; // Remove the 'O'
-                                    elementAtTheNewPosition = matrix[bee.Row, bee.Col + 2];
-                                    if (elementAtTheNewPosition == 'f') // On our bonus move if the element is flower
-                                    {
-                                        pollinatedCount++; // Increment the count of pollinated flowers
-                                    }
-                                    matrix[bee.Row, bee.Col + 2] = 'B'; // Move the Bee to the new position
-                                    bee.Col += 2; // Update the col position of the Bee in the property
-                                }
-                                break;
-                            default: // Its an empty position
-                                matrix[bee.Row, bee.Col + 1] = 'B'; // Move the Bee to the new position
-                                bee.Col++; // Update the col position of the Bee in the property
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        matrix[bee.Row, bee.Col] = '.';
-                        bee.Row = bee.Col = -1;
-                        isLost = true;
-                    }
-                    break;
-            }
-        }
-
-        private class Bee
+        private class Position // Stores the Bee Position
         {
             public int Row { get; set; }
             public int Col { get; set; }
 
-            public Bee(int row, int col)
+            public Position(int row, int col)
             {
                 this.Row = row;
                 this.Col = col;
