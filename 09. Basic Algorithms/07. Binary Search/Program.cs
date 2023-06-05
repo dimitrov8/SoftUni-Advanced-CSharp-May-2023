@@ -14,7 +14,7 @@ public class BinarySearch
         {
             int mid = low + (high - low) / 2; // Calculate the middle index of the current search range
 
-            if (key == array[mid]) return mid; // If the key is found: => Return it
+            if (key == array[mid]) return mid; // If the key is found: => Return the index
 
             // Narrow the search range
             low = key < array[mid] ? low : mid + 1;
