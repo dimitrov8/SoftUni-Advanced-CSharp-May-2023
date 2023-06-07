@@ -1,6 +1,6 @@
 using System;
 
-namespace _02._Bee
+namespace Bee
 {
     class Program
     {
