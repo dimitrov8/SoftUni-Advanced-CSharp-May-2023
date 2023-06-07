@@ -1,16 +1,6 @@
 using System;
-using System.Linq;
 
-namespace Bee
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            int length = int.Parse(Console.ReadLine()!); // Read the length of the matrix (2D array)
-            char[,] matrix using System;
-
-namespace Bee
+namespace _02._Bee
 {
     class Program
     {
