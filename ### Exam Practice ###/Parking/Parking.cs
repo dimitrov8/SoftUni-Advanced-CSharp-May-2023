@@ -21,11 +21,9 @@ namespace Parking
 
         public void Add(Car car)
         {
-            if (this.Capacity > 0)
-            {
-                this.data.Add(car);
-                this.Capacity--;
-            }
+            if (this.Capacity <= 0) return;
+            this.data.Add(car);
+            this.Capacity--;
         }
 
         public bool Remove(string manufacturer, string model)
@@ -37,19 +35,17 @@ namespace Parking
             }
 
             this.Capacity++;
-            return true;
+            return this.data.Remove(carToRemove);
         }
 
         public Car GetLatestCar()
         {
-            Car latestCar = this.data.OrderByDescending(c => c.Year).FirstOrDefault();
-            return latestCar ?? null;
+            return this.data.OrderByDescending(c => c.Year).FirstOrDefault();
         }
 
         public Car GetCar(string manufacturer, string model)
         {
-            Car carToGet = this.data.FirstOrDefault(c => c.Manufacturer == manufacturer && c.Model == model);
-            return carToGet ?? null;
+            return this.data.FirstOrDefault(c => c.Manufacturer == manufacturer && c.Model == model);
         }
         
         public string GetStatistics()
