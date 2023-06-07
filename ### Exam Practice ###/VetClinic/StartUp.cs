@@ -6,17 +6,15 @@ namespace VetClinic
     {
         static void Main(string[] args)
         {
-            Clinic clinic = new Clinic(1);
-            
-            Console.WriteLine(clinic.Capacity);
-            
+            Clinic clinic = new Clinic(20);
+
             Pet dog = new Pet("Ellias", 5, "Tim");
 
             Console.WriteLine(dog);
 
             clinic.Add(dog);
 
-            Console.WriteLine(clinic.Remove("Ellias"));
+            Console.WriteLine(clinic.Remove("Ellias")); 
             Console.WriteLine(clinic.Remove("Pufa"));
 
             Pet cat = new Pet("Bella", 2, "Mia");
@@ -34,7 +32,6 @@ namespace VetClinic
             Console.WriteLine(clinic.Count);
 
             Console.WriteLine(clinic.GetStatistics());
-            Console.WriteLine(clinic.Capacity);
         }
     }
 }
