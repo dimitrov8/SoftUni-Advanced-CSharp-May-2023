@@ -18,7 +18,6 @@ namespace CocktailParty
             Console.WriteLine(cocktail.GetMostAlcoholicIngredient());
             Console.WriteLine(cocktail.CurrentAlcoholLevel);
             Console.WriteLine(cocktail.Report());
-
         }
     }
 }
