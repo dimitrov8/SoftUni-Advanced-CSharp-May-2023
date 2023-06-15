@@ -11,8 +11,8 @@ namespace BeaverAtWork
             int length = int.Parse(Console.ReadLine()!); // User input for the length of the matrix
             char[,] matrix = new Char[length, length]; // Create the matrix
 
-            int branchesInTheBond = 0; // Gets the number of branches in the pond  
-            AssignMatrixValues(matrix, ref branchesInTheBond); // Method: => Assigns user input values in the matrix and get the total number of branches in the pond
+            int branchesInThePond = 0; // Gets the number of branches in the pond  
+            AssignMatrixValues(matrix, ref branchesInThePond); // Method: => Assigns user input values in the matrix and get the total number of branches in the pond
 
             List<char> branches = new List<char>(); // Keeps track of the successfully collected branches
             int totalCollectedBranches = 0; // Keeps track of the total branches the Beaver collected even the dropped ones
@@ -41,7 +41,7 @@ namespace BeaverAtWork
                         break;
                 }
                 // If the Beaver collected all branches in the pond
-                if (totalCollectedBranches == branchesInTheBond)
+                if (totalCollectedBranches == branchesInThePond)
                 {
                     break; // Break out of the loop
                 }
@@ -99,9 +99,9 @@ namespace BeaverAtWork
             }
 
             // Output
-            Console.WriteLine(totalCollectedBranches == branchesInTheBond
+            Console.WriteLine(totalCollectedBranches == branchesInThePond
                 ? $"The Beaver successfully collect {branches.Count} wood branches: {string.Join(", ", branches)}."
-                : $"The Beaver failed to collect every wood branch. There are {branchesInTheBond - totalCollectedBranches} branches left.");
+                : $"The Beaver failed to collect every wood branch. There are {branchesInThePond - totalCollectedBranches} branches left.");
             PrintMatrix(matrix); // Print the matrix
         }
 
