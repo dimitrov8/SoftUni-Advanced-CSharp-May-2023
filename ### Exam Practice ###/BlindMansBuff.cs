@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Blind_Mans_Buff
+namespace BlindMansBuff
 {
     class Program
     {
